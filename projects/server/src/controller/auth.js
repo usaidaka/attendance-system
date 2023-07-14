@@ -41,16 +41,9 @@ const login = async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET
     );
 
-    if (user.role_id === 2) {
-      await db.Attendance.create({
-        user_id: user.id,
-        clock_in: dayjs(),
-      });
-    }
-
     res.json({
       ok: true,
-      message: "welcome, you are an admin",
+      message: "welcome!",
       user_information: user,
       access_token: accessToken,
     });
@@ -63,50 +56,18 @@ const login = async (req, res) => {
   }
 };
 
-const logout = async (req, res) => {
-  const userData = req.user;
-  console.log(userData);
-  try {
-    if (!userData) {
-      return res.status(403).json({
-        ok: false,
-        message: "unknown employee",
-      });
-    }
-    const currentDate = dayjs().format("YYYY-MM-DD");
-    // const testDate = dayjs("2023-07-13 16:04:10").format("YYYY-MM-DD");
-
-    await db.Attendance.update(
-      {
-        clock_out: dayjs(),
-      },
-      {
-        where: {
-          user_id: userData.userId,
-          clock_out: null,
-          clock_in: { [db.Sequelize.Op.startsWith]: currentDate },
-        },
-      }
-    );
-    res.status(201).json({
-      ok: true,
-      message: "you are logged out",
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      ok: false,
-      message: error.message,
-    });
-  }
-};
-
 const register = async (req, res) => {
   const userData = req.user;
 
-  console.log(userData.role);
   try {
     //check is admin
+    if (!userData) {
+      return res.status(400).json({
+        ok: false,
+        message: "token access needed",
+      });
+    }
+
     const isAdmin = userData.role;
     if (isAdmin !== 1) {
       return res.status(400).json({
@@ -118,12 +79,11 @@ const register = async (req, res) => {
       email,
       password,
       confirmPassword,
-      role,
       first_name,
       last_name,
       birth_date,
       join_date,
-      salary_id,
+      salary,
     } = req.body;
     if (password !== confirmPassword)
       return res.status(400).json({
@@ -143,11 +103,6 @@ const register = async (req, res) => {
       });
     }
 
-    const secret = process.env.ACCESS_TOKEN_SECRET + password;
-    const token = jwt.sign({ email: email, role }, secret, {
-      expiresIn: "30m",
-    });
-
     const OTP = Math.random(new Date().getTime() * 543241)
       .toString()
       .substring(2, 8);
@@ -163,7 +118,10 @@ const register = async (req, res) => {
     });
 
     // create employee
-    const salaryData = await db.Salary.findOne({ where: { id: salary_id } });
+    await db.Salary.create({ basic_salary: salary });
+    const salaryData = await db.Salary.findOne({
+      where: { basic_salary: salary },
+    });
 
     const employeeData = await db.User.findOne({
       attributes: { exclude: ["user_id"] },
@@ -176,16 +134,24 @@ const register = async (req, res) => {
       birth_date: birth_date,
       join_date: join_date,
       user_id: employeeData.id,
-      salary_id: salaryData.basic_salary,
+      salary_id: salaryData.id,
     });
 
-    const link = `${process.env.BASEPATH_FE_REACT}/register-employee/${token}`;
+    const secret = process.env.ACCESS_TOKEN_SECRET;
+    const token = jwt.sign(
+      { email: email, id: employeeData.id },
+      secret /* {
+      expiresIn: "30m",
+    } */
+    );
+
+    const link = `${process.env.BASEPATH_FE_REACT}/update-employee/${token}`;
 
     const registerEmployee = { recipient_email: email, OTP, link };
 
     Mailer.sendEmailRegisterEmployee(registerEmployee)
       .then((response) =>
-        res.status(200).json({
+        res.status(201).json({
           ok: true,
           message: `${response.message}, your link and OTP will be expired on 30 minutes`,
         })
@@ -200,8 +166,170 @@ const register = async (req, res) => {
   }
 };
 
+const updateEmployee = async (req, res) => {
+  const { token } = req.params;
+  try {
+    if (token == null) {
+      return res.status(401).json({
+        ok: false,
+        message: "token unauthorized",
+      });
+    }
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+      if (err) {
+        return res.status(403).json({
+          ok: false,
+          message: "Forbidden response",
+        });
+      }
+      req.username = decoded.username;
+      req.email = decoded.email;
+    });
+    const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    req.user = payload;
+    const {
+      email,
+      password,
+      confirmPassword,
+      first_name,
+      last_name,
+      birth_date,
+      token_confirmation,
+    } = req.body;
+    if (password !== confirmPassword)
+      return res.status(400).json({
+        ok: false,
+        message: "password and confirm password have to match",
+      });
+    const salt = await bcrypt.genSalt();
+    const hashPassword = await bcrypt.hash(password, salt);
+
+    const token_user = await db.User.findOne({
+      attributes: { exclude: ["user_id"] },
+      where: { token_confirmation: token_confirmation },
+    });
+
+    if (!token_user) {
+      return res.status(404).json({
+        ok: false,
+        message: "wrong OTP",
+      });
+    }
+
+    // create user
+    await db.User.update(
+      {
+        email: email,
+        password: hashPassword,
+        token_confirmation: null,
+        token_confirmation_createdAt: null,
+      },
+      { where: { token_confirmation: token_confirmation } }
+    );
+
+    // create employee
+
+    const employeeData = await db.User.findOne({
+      attributes: { exclude: ["user_id", "token_confirmation"] },
+      where: { email: req.user.email },
+    });
+    if (!employeeData) {
+      return res.status(400).json({
+        ok: false,
+        message: "employee unregistered",
+      });
+    }
+
+    await db.Employee.update(
+      {
+        first_name: first_name,
+        last_name: last_name,
+        birth_date: birth_date,
+      },
+      { where: { user_id: req.user.id } }
+    );
+
+    res.status(201).json({
+      ok: true,
+      message: "update employee data successful",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      ok: false,
+      message: error.message,
+    });
+  }
+};
+
+const getEmployeeData = async (req, res) => {
+  const { token } = req.params;
+  try {
+    if (token == null) {
+      return res.status(401).json({
+        ok: false,
+        message: "token unauthorized",
+      });
+    }
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+      if (err) {
+        return res.status(403).json({
+          ok: false,
+          message: "Forbidden response",
+        });
+      }
+      req.username = decoded.username;
+      req.email = decoded.email;
+    });
+
+    const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    req.user = payload;
+
+    const employeeData = await db.Employee.findOne({
+      where: { user_id: req.user.id },
+      attributes: {
+        exclude: ["salary_id", "user_id", "createdAt", "updatedAt"],
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: {
+            exclude: [
+              "user_id",
+              "password",
+              "token_confirmation",
+              "token_confirmation_createdAt",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+      ],
+    });
+
+    if (!employeeData) {
+      return res.status(400).json({
+        ok: false,
+        message: "employee's data not found",
+      });
+    }
+
+    res.status(200).json({
+      ok: true,
+      employeeData: employeeData,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   login,
   register,
-  logout,
+  updateEmployee,
+  getEmployeeData,
 };

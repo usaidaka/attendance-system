@@ -2,9 +2,10 @@ require("dotenv/config");
 const express = require("express");
 const cors = require("cors");
 const { join } = require("path");
-const db = require("../models");
+
 //router
 const AuthRouter = require("../src/routes/auth");
+const AttendanceRouter = require("../src/routes/attendance");
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());
 // ===========================
 // NOTE : Add your routes here
 app.use("/api", AuthRouter);
+app.use("/api", AttendanceRouter);
 
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API` / api / greetings);

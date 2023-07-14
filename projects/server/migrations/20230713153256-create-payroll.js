@@ -1,11 +1,8 @@
 "use strict";
-
-const { DATEONLY } = require("sequelize");
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Attendances", {
+    await queryInterface.createTable("Payrolls", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,15 +12,14 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER,
       },
-      clock_in: {
-        type: Sequelize.TIME,
-        allowNull: true,
-        defaultValue: null,
+      date: {
+        type: Sequelize.DATE,
       },
-      clock_out: {
-        type: Sequelize.TIME,
-        allowNull: true,
-        defaultValue: null,
+      deduction: {
+        type: Sequelize.INTEGER,
+      },
+      payroll: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
@@ -36,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Attendances");
+    await queryInterface.dropTable("Payrolls");
   },
 };

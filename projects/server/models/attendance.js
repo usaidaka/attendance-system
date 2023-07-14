@@ -16,14 +16,22 @@ module.exports = (sequelize, DataTypes) => {
     {
       user_id: DataTypes.INTEGER,
       clock_in: {
-        type: DataTypes.DATE,
+        type: DataTypes.TIME,
         allowNull: true,
         defaultValue: null,
       },
       clock_out: {
-        type: DataTypes.DATE,
+        type: DataTypes.TIME,
         allowNull: true,
         defaultValue: null,
+      },
+      date: {
+        type: DataTypes.DATE,
+        defaultValue: null,
+      },
+      isValid: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
     },
     {
