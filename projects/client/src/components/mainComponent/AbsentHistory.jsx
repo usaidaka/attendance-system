@@ -30,7 +30,7 @@ const AbsentHistory = () => {
       .then((res) => setAbsents(res.data?.data));
   }, [token]);
 
-  const buttonFilterBlog = (e) => {
+  const buttonFilterAbsent = (e) => {
     e.preventDefault();
     const queryParams = {};
 
@@ -125,7 +125,7 @@ const AbsentHistory = () => {
               />
               <div className="flex justify-end">
                 <button
-                  onClick={buttonFilterBlog}
+                  onClick={buttonFilterAbsent}
                   className="bg-blue-button rounded-md text-white w-20 h-6 text-xs"
                 >
                   go

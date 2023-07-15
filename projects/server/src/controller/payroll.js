@@ -113,14 +113,53 @@ const createPayroll = async (req, res) => {
 const getPayroll = async (req, res) => {
   const userData = req.user;
 
+  const sixMonthsAgo = dayjs()
+    .subtract(6, "month")
+    .startOf("day")
+    .format("YYYY-MM-DD HH:mm:ss");
+  const endDate = dayjs().endOf("month").format("YYYY-MM-DD HH:mm:ss");
+
+  const startDate = req.query.startDate
+    ? dayjs(req.query.startDate).startOf("day").format("YYYY-MM-DD HH:mm:ss")
+    : sixMonthsAgo;
+  const endDateQuery = req.query.endDate
+    ? dayjs(req.query.endDate).endOf("day").format("YYYY-MM-DD HH:mm:ss")
+    : endDate;
+
+  const pagination = {
+    page: Number(req.query.page) || 1,
+    perPage: 5,
+  };
+  const offset = (pagination.page - 1) * pagination.perPage;
+
   try {
-    const payrollData = await db.Payroll.findAll({
-      where: { user_id: userData.userId },
+    const payrollData = await db.Payroll.findAndCountAll({
+      where: {
+        user_id: userData.userId,
+        date: {
+          [db.Sequelize.Op.between]: [startDate, endDateQuery],
+        },
+      },
+      limit: pagination.perPage,
+      offset,
+      order: [["date", "DESC"]],
     });
+
+    if (!payrollData) {
+      return res.status(400).json({
+        ok: false,
+        message: "Employee's payroll data not found",
+      });
+    }
+
+    console.log("count", payrollData.count);
 
     res.status(200).json({
       ok: true,
-      data: payrollData,
+      data: payrollData.rows,
+      totalItems: payrollData.count,
+      currentPage: pagination.page,
+      totalPages: Math.ceil(payrollData.count / pagination.perPage),
     });
   } catch (error) {
     res.status(500).json({
@@ -129,6 +168,7 @@ const getPayroll = async (req, res) => {
     });
   }
 };
+
 module.exports = {
   createPayroll,
   getPayroll,
