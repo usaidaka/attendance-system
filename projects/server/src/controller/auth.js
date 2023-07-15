@@ -286,7 +286,7 @@ const getEmployeeData = async (req, res) => {
     req.user = payload;
 
     const employeeData = await db.Employee.findOne({
-      where: { user_id: req.user.id },
+      where: { user_id: req.user.userId },
       attributes: {
         exclude: ["salary_id", "user_id", "createdAt", "updatedAt"],
       },

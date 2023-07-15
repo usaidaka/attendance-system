@@ -22,7 +22,36 @@ const clockIn = async (req, res) => {
       });
     }
 
-    await db.Attendance.create({
+    const isClockedIn = await db.Attendance.findOne({
+      where: { user_id: userData.userId },
+      limit: 1,
+      order: [["id", "desc"]],
+    });
+
+    if (isClockedIn) {
+      const lastClockInDate = isClockedIn.date;
+      const lastClockInDateString = lastClockInDate
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ")
+        .split(" ")[0];
+
+      const clockedInTwice = new Date();
+      const currentClockInTwiceDateString = clockedInTwice
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ")
+        .split(" ")[0];
+
+      if (lastClockInDateString === currentClockInTwiceDateString) {
+        return res.status(400).json({
+          ok: false,
+          message: "you have clocked in today",
+        });
+      }
+    }
+
+    const clock = await db.Attendance.create({
       user_id: userData.userId,
       clock_in: currentTime,
       date: currentDate,
@@ -30,6 +59,7 @@ const clockIn = async (req, res) => {
     res.status(201).json({
       ok: true,
       message: "you are logged in",
+      data: clock,
     });
   } catch (error) {
     console.log(error);
@@ -102,7 +132,7 @@ const clockOut = async (req, res) => {
       });
     }
 
-    await db.Attendance.update(
+    const clock = await db.Attendance.update(
       {
         clock_out: currentTime,
         isValid: true,
@@ -119,6 +149,7 @@ const clockOut = async (req, res) => {
     res.status(201).json({
       ok: true,
       message: "clocked out successful",
+      data: clock,
     });
   } catch (error) {
     console.log(error);
@@ -129,7 +160,142 @@ const clockOut = async (req, res) => {
   }
 };
 
+const getLatestClock = async (req, res) => {
+  const userData = req.user;
+  try {
+    const lastClock = await db.Attendance.findOne({
+      where: { user_id: userData.userId },
+      limit: 1,
+      order: [["id", "desc"]],
+    });
+    res.status(200).json({
+      ok: true,
+      data: lastClock,
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: error.message,
+    });
+  }
+};
+
+/* const employeeAbsentById = async (req, res) => {
+  const userData = req.user;
+
+  const currentDate = dayjs();
+  const sevenDaysPrior = currentDate.subtract(5, "day").format("YYYY-MM-DD");
+  const currentDatePlus1 = currentDate.add(1, "day").format("YYYY-MM-DD");
+  const startDate = req.query.startDate
+    ? (req.query.startDate = dayjs(req.query.startDate).format("YYYY-MM-DD"))
+    : sevenDaysPrior;
+  const endDate = req.query.endDate
+    ? (req.query.endDate = dayjs(req.query.endDate).format("YYYY-MM-DD"))
+    : currentDatePlus1;
+
+  const pagination = {
+    page: Number(req.query.page) || 1,
+    perPage: 5,
+  };
+
+  try {
+    const absent = await db.Attendance.findAll({
+      where: {
+        user_id: userData.userId,
+        date: {
+          [db.Sequelize.Op.between]: [startDate, endDate],
+        },
+      },
+      limit: [pagination.perPage],
+      offset: (pagination.page - 1) * pagination.perPage,
+    });
+
+    if (!absent) {
+      return res.status(400).json({
+        ok: false,
+        message: "employee's absent data not found",
+      });
+    }
+
+    res.status(200).json({
+      ok: true,
+      data: absent,
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: error.message,
+    });
+  }
+}; */
+
+const employeeAbsentById = async (req, res) => {
+  const userData = req.user;
+
+  const startDate = req.query.startDate
+    ? dayjs(req.query.startDate).startOf("day").format("YYYY-MM-DD HH:mm:ss")
+    : dayjs().subtract(5, "day").startOf("day").format("YYYY-MM-DD HH:mm:ss");
+  const endDate = req.query.endDate
+    ? dayjs(req.query.endDate).endOf("day").format("YYYY-MM-DD HH:mm:ss")
+    : dayjs().add(1, "day").endOf("day").format("YYYY-MM-DD HH:mm:ss");
+
+  const pagination = {
+    page: Number(req.query.page) || 1,
+    perPage: 5,
+  };
+  const offset = (pagination.page - 1) * pagination.perPage;
+
+  try {
+    const absent = await db.Attendance.findAndCountAll({
+      where: {
+        user_id: userData.userId,
+        date: {
+          [db.Sequelize.Op.between]: [startDate, endDate],
+        },
+      },
+      limit: pagination.perPage,
+      offset,
+      order: [["date", "DESC"]],
+    });
+
+    if (!absent) {
+      return res.status(400).json({
+        ok: false,
+        message: "Employee's absent data not found",
+      });
+    }
+
+    res.status(200).json({
+      ok: true,
+      data: absent.rows,
+      totalItems: absent.count,
+      currentPage: pagination.page,
+      totalPages: Math.ceil(absent.count / pagination.perPage),
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: error.message,
+    });
+  }
+};
+
+const getAllAbsent = async (req, res) => {
+  const userData = req.user;
+  try {
+    const all = await db.Attendance.findAll();
+    res.json({
+      all,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   clockOut,
   clockIn,
+  getLatestClock,
+  employeeAbsentById,
+  getAllAbsent,
 };

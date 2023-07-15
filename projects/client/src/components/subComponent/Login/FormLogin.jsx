@@ -24,10 +24,8 @@ const FormLogin = () => {
       });
 
       const token = response.data?.access_token;
-      console.log("token", token);
       const roleUser = response?.data?.user_information?.role_id;
-      console.log("response", response);
-      console.log("userData", typeof roleUser);
+
       if (response.status === 200) {
         setValues({
           email: "",

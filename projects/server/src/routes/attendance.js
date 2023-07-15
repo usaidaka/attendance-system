@@ -7,10 +7,28 @@ AttendanceRouter.post(
   verifyTokenEmployee,
   AttendanceController.clockIn
 );
-AttendanceRouter.post(
+AttendanceRouter.patch(
   "/attendance/clock-out",
   verifyTokenEmployee,
   AttendanceController.clockOut
+);
+
+AttendanceRouter.get(
+  "/attendance/track",
+  verifyTokenEmployee,
+  AttendanceController.getLatestClock
+);
+
+AttendanceRouter.get(
+  "/attendance/absent",
+  verifyTokenEmployee,
+  AttendanceController.employeeAbsentById
+);
+
+AttendanceRouter.get(
+  "/attendance/all-absent",
+  verifyTokenEmployee,
+  AttendanceController.getAllAbsent
 );
 
 module.exports = AttendanceRouter;

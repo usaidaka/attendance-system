@@ -25,8 +25,6 @@ const UpdateEmployee = () => {
       .catch((err) => console.log(err));
   }, [getToken, token]);
 
-  console.log(employeeData);
-  console.log("token", getToken);
   const updateUser = async (values, { setStatus, setValues }) => {
     try {
       await axios.patch(`/auth/employee-data/${getToken}`, values, {
@@ -113,7 +111,7 @@ const UpdateEmployee = () => {
   if (!employeeData) {
     return <p></p>;
   }
-  console.log("lalalalaal", employeeData);
+
   return (
     <div className="w-full flex flex-col justify-center items-center h-screen ">
       {/* MOBILE */}
