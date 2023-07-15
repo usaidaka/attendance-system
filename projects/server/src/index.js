@@ -6,6 +6,7 @@ const { join } = require("path");
 //router
 const AuthRouter = require("../src/routes/auth");
 const AttendanceRouter = require("../src/routes/attendance");
+const PayrollRouter = require("../src/routes/payroll");
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.json());
 // NOTE : Add your routes here
 app.use("/api", AuthRouter);
 app.use("/api", AttendanceRouter);
+app.use("/api", PayrollRouter);
 
 app.get("/api", (req, res) => {
   res.send(`Hello, this is my API` / api / greetings);

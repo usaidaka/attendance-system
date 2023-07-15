@@ -1,19 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BoltIcon,
   BoltSlashIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import axios from "../../../api/axios";
+import { useDispatch } from "react-redux";
+
 import { Link, useNavigate } from "react-router-dom";
+import { attendanceClock } from "../../../global/Attendace";
 
 const CardClock = () => {
   const [errMsg, setErrMsg] = useState("");
   const [isSuccess, setIsSuccess] = useState("");
   const [clockOut, setClockOut] = useState("");
   const [attendance, setAttendance] = useState({});
+  const [employee, setEmployee] = useState({});
+  const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get("/auth/employee-data", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => setEmployee(res.data?.data));
+  }, [token]);
 
   const handleClockIn = () => {
     try {
@@ -31,7 +44,10 @@ const CardClock = () => {
             .get("/attendance/track", {
               headers: { Authorization: `Bearer ${token}` },
             })
-            .then((res) => setAttendance(res.data?.data));
+            .then((res) => {
+              setAttendance(res.data?.data);
+              dispatch(attendanceClock(res.data?.data));
+            });
         })
         .catch((err) => setErrMsg(err?.response?.data?.message));
     } catch (error) {
@@ -52,11 +68,15 @@ const CardClock = () => {
         )
         .then((res) => {
           setClockOut(res.data?.message);
+
           axios
             .get("/attendance/track", {
               headers: { Authorization: `Bearer ${token}` },
             })
-            .then((res) => setAttendance(res.data?.data));
+            .then((res) => {
+              setAttendance(res.data?.data);
+              dispatch(attendanceClock(res.data?.data));
+            });
         })
         .catch((err) => setErrMsg(err?.response?.data?.message));
     } catch (error) {
@@ -69,6 +89,10 @@ const CardClock = () => {
     navigate("/");
     localStorage.removeItem("token");
   };
+
+  if (!employee) {
+    return <p></p>;
+  }
 
   return (
     <div className="bg-white w-64 mt-20 rounded-xl lg:w-[1000px] shadow-xl">
@@ -116,10 +140,12 @@ const CardClock = () => {
         <Link to="/dashboard-employee">
           <div>
             <h1>Welcome,</h1>
-            <h1 className="font-semibold text-xl">Usaid Aka</h1>
+            <h1 className="font-semibold text-xl">
+              {employee.first_name} {employee.last_name}
+            </h1>
           </div>
         </Link>
-        <div className="mt-2 bg-red-500 h-fit px-2 mr-3 rounded-md text-white">
+        <div className="mt-2 bg-red-500 h-fit px-2 mr-3 rounded-md text-xs lg:text-base text-white">
           <button onClick={handleLogOut}>log out</button>
         </div>
       </div>

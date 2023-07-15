@@ -9,7 +9,7 @@ import CardClock from "../subComponent/DashboardEmployee/CardClock";
 import { Link } from "react-router-dom";
 
 const PayrollHistory = () => {
-  const headings = ["No", "Date", "Clock in", "Clock Out"];
+  const headings = ["No", "Date", "deduction", "payroll"];
 
   return (
     <div className="w-full h-screen">
@@ -36,8 +36,10 @@ const PayrollHistory = () => {
               <table className="w-full rounded-md bg-white">
                 <thead>
                   <tr className="text-sm">
-                    {headings.map((heading) => (
-                      <th className="">{heading}</th>
+                    {headings.map((heading, index) => (
+                      <th className="" key={index}>
+                        {heading}
+                      </th>
                     ))}
                   </tr>
                 </thead>

@@ -327,9 +327,34 @@ const getEmployeeData = async (req, res) => {
   }
 };
 
+const employeeInformation = async (req, res) => {
+  const userData = req.user;
+  try {
+    const employeeData = await db.Employee.findOne({
+      where: { user_id: userData.userId },
+    });
+    if (!employeeData) {
+      return res.status(400).json({
+        ok: false,
+        message: "data not fount",
+      });
+    }
+    res.status(200).json({
+      ok: true,
+      data: employeeData,
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   login,
   register,
   updateEmployee,
   getEmployeeData,
+  employeeInformation,
 };
