@@ -17,7 +17,6 @@ const PayEmployeeByAdmin = () => {
           <h1>Please, Make sure </h1>
           <h1>the Employee should paid on this Date </h1>
         </div>
-
         <ModalPayroll />
         <button className="bg-blue-button w-64 text-white px-3 py-1 mt-2 rounded-md">
           <Link to="/dashboard-admin">Back to dashboard</Link>

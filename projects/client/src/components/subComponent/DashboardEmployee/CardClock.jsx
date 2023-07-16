@@ -98,7 +98,7 @@ const CardClock = () => {
     <div className="bg-white w-64 mt-20 rounded-xl lg:w-[1000px] shadow-xl">
       <div>
         {errMsg ? (
-          <div className="w-60 mx-auto rounded-md absolute top-5 right-7 bg-red-200 text-red-700 h-10 flex justify-center items-center mt-2 lg:mx-auto">
+          <div className="w-60 mx-auto rounded-md absolute top-5 right-7 bg-red-200 text-red-700 h-10 flex justify-center items-center mt-2 lg:mx-auto text-sm">
             <p className="bg-inherit">{errMsg}</p>
             <button
               className="w-5 absolute right-1"

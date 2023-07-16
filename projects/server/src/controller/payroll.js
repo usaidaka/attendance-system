@@ -109,7 +109,7 @@ const getPayroll = async (req, res) => {
   const userData = req.user;
 
   const sixMonthsAgo = dayjs()
-    .subtract(6, "month")
+    .subtract(1, "year")
     .startOf("day")
     .format("YYYY-MM-DD HH:mm:ss");
   const endDate = dayjs().endOf("month").format("YYYY-MM-DD HH:mm:ss");

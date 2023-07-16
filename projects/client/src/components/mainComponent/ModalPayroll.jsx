@@ -7,7 +7,7 @@ import axios from "../../api/axios";
 
 export default function ModalPayroll() {
   const [openModal, setOpenModal] = useState("");
-  const [resPayroll, setResPayroll] = useState({});
+  const [resPayroll, setResPayroll] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const token = localStorage.getItem("token");
 
@@ -40,7 +40,7 @@ export default function ModalPayroll() {
         <div className="w-60 mx-auto rounded-md absolute top-5 right-7 bg-blue-200 text-blue-700 h-10 flex justify-center items-center mt-2 lg:mx-auto text-sm px-1 lg:flex  lg:justify-center lg:static">
           <p className="bg-inherit">{resPayroll.data?.message}</p>
           <button
-            className="w-5 absolute right-1"
+            className="w-5 absolute right-1 lg:static"
             onClick={() => {
               setResPayroll("");
             }}
