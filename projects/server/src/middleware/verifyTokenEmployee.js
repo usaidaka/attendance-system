@@ -26,11 +26,6 @@ const verifyTokenEmployee = (req, res, next) => {
 
     if (req.user.role === 2) {
       next();
-    } else {
-      return res.status(403).json({
-        ok: false,
-        message: "only employee can access",
-      });
     }
   } catch (error) {
     console.log(error);

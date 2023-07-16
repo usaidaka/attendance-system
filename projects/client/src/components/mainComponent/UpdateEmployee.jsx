@@ -98,10 +98,6 @@ const UpdateEmployee = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  // if (!employeeData) {
-  //   return <p></p>;
-  // }
-
   return (
     <div className="w-full flex flex-col justify-center items-center h-screen ">
       {/* MOBILE */}

@@ -26,11 +26,6 @@ const verifyTokenAdmin = (req, res, next) => {
 
     if (req.user.role === 1) {
       next();
-    } else {
-      return res.status(403).json({
-        ok: false,
-        message: "only admin can access",
-      });
     }
   } catch (error) {
     console.log(error);
