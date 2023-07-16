@@ -7,7 +7,7 @@ const verifyToken = require("../middleware/verifyToken");
 AuthRouter.post("/auth/register", verifyTokenAdmin, AuthController.register);
 AuthRouter.post("/auth/login", AuthController.login);
 AuthRouter.patch("/auth/employee-data/:token", AuthController.updateEmployee);
-AuthRouter.get("/auth/employee-data/:token", AuthController.getEmployeeData);
+
 AuthRouter.get(
   "/auth/employee-data",
   verifyTokenEmployee,

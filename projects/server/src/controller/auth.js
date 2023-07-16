@@ -259,65 +259,6 @@ const updateEmployee = async (req, res) => {
   }
 };
 
-const getEmployeeData = async (req, res) => {
-  const token = req.params.token;
-  try {
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-      if (err) {
-        return res.status(403).json({
-          ok: false,
-          message: "Forbidden response",
-        });
-      }
-      req.email = decoded.email;
-    });
-
-    const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    req.user = payload;
-    const userData = req.user;
-    console.log(userData);
-
-    const employeeData = await db.Employee.findOne({
-      where: { user_id: userData.userId },
-      attributes: {
-        exclude: ["salary_id", "user_id", "createdAt", "updatedAt"],
-      },
-      include: [
-        {
-          model: db.User,
-          attributes: {
-            exclude: [
-              "user_id",
-              "password",
-              "token_confirmation",
-              "token_confirmation_createdAt",
-              "createdAt",
-              "updatedAt",
-            ],
-          },
-        },
-      ],
-    });
-
-    if (!employeeData) {
-      return res.status(400).json({
-        ok: false,
-        message: "employee's data not found",
-      });
-    }
-
-    res.status(200).json({
-      ok: true,
-      employeeData: employeeData,
-    });
-  } catch (error) {
-    res.status(500).json({
-      ok: false,
-      message: error.message,
-    });
-  }
-};
-
 const employeeInformation = async (req, res) => {
   const userData = req.user;
   try {
