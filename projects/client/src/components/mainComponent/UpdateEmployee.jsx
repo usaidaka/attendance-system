@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { FormControl, FormErrorMessage } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -13,21 +13,11 @@ const UpdateEmployee = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState("");
-  const [getToken, setGetToken] = useState("");
-  const [employeeData, setEmployeeData] = useState([]);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setGetToken(token);
-    axios
-      .get(`/auth/employee-data/${getToken}`)
-      .then((res) => setEmployeeData(res.data?.employeeData))
-      .catch((err) => setErrMsg(err.response?.data?.message));
-  }, [getToken, token]);
 
   const updateUser = async (values, { setStatus, setValues }) => {
     try {
-      await axios.patch(`/auth/employee-data/${getToken}`, values, {
+      await axios.patch(`/auth/employee-data/${token}`, values, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -108,9 +98,9 @@ const UpdateEmployee = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  if (!employeeData) {
-    return <p></p>;
-  }
+  // if (!employeeData) {
+  //   return <p></p>;
+  // }
 
   return (
     <div className="w-full flex flex-col justify-center items-center h-screen ">
@@ -139,7 +129,7 @@ const UpdateEmployee = () => {
               </label>
               <input
                 onChange={handleForm}
-                placeholder={employeeData.User?.email}
+                placeholder="email"
                 type="text"
                 name="email"
                 className="py-1 px-2 rounded-md bg-zinc-200 mx-3 text-black text-sm"
@@ -161,8 +151,7 @@ const UpdateEmployee = () => {
 
               <input
                 onChange={handleForm}
-                placeholder={employeeData.first_name}
-                defaultValue={employeeData.first_name}
+                placeholder="first name"
                 type="text"
                 name="first_name"
                 className="py-1 px-2 rounded-md bg-zinc-200 mx-3 text-black text-sm"
@@ -182,8 +171,7 @@ const UpdateEmployee = () => {
               </label>
               <input
                 onChange={handleForm}
-                placeholder={employeeData.last_name}
-                defaultValue={employeeData.last_name}
+                placeholder="last name"
                 type="text"
                 name="last_name"
                 className="py-1 px-2 rounded-md bg-zinc-200 mx-3 text-black text-sm"

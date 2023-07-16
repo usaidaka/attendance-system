@@ -260,14 +260,8 @@ const updateEmployee = async (req, res) => {
 };
 
 const getEmployeeData = async (req, res) => {
-  const { token } = req.params;
+  const token = req.params.token;
   try {
-    if (token == null) {
-      return res.status(401).json({
-        ok: false,
-        message: "token unauthorized",
-      });
-    }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
       if (err) {
         return res.status(403).json({
@@ -275,15 +269,16 @@ const getEmployeeData = async (req, res) => {
           message: "Forbidden response",
         });
       }
-      req.username = decoded.username;
       req.email = decoded.email;
     });
 
     const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     req.user = payload;
+    const userData = req.user;
+    console.log(userData);
 
     const employeeData = await db.Employee.findOne({
-      where: { user_id: req.user.userId },
+      where: { user_id: userData.userId },
       attributes: {
         exclude: ["salary_id", "user_id", "createdAt", "updatedAt"],
       },
