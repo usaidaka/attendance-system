@@ -43,3 +43,8 @@ Run command on server project.
 ### `npm run install:server`
 
 Install dependency in server project. Use `npm install:server:dev` for dev dependencies.
+
+## download data SQL for schema and the table
+https://drive.google.com/drive/folders/1F8pU_VBXlRCkacuo-CauF743iY632Tcq?usp=sharing
+
+
