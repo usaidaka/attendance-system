@@ -15,9 +15,6 @@ module.exports = {
       date: {
         type: Sequelize.DATE,
       },
-      deduction: {
-        type: Sequelize.INTEGER,
-      },
       payroll: {
         type: Sequelize.INTEGER,
       },

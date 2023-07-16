@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import { Pagination } from "flowbite-react";
+import toRupiah from "@develoka/angka-rupiah-js";
 
 import CardClock from "../subComponent/DashboardEmployee/CardClock";
 import axios from "../../api/axios";
 import withAuth from "../../withAuth";
 
-const headings = ["No", "Date", "deduction", "payroll"];
+const headings = ["No", "Date", "payroll"];
 const PayrollHistory = () => {
   const token = localStorage.getItem("token");
   const [payrolls, setPayrolls] = useState([]);
@@ -22,12 +23,22 @@ const PayrollHistory = () => {
     const formattedEnd = currentDate.format("YYYY-MM-DD");
     return formattedEnd;
   });
+  const [curSalary, setCurSalary] = useState(0);
 
   useEffect(() => {
     axios
       .get("/payroll", { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => setPayrolls(res.data?.data));
   }, [token]);
+
+  useEffect(() => {
+    axios
+      .get("/auth/employee-data", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => setCurSalary(res.data?.data?.Salary?.basic_salary));
+  }, [token]);
+  console.log(curSalary);
 
   const buttonFilterPayroll = (e) => {
     e.preventDefault();
@@ -111,6 +122,7 @@ const PayrollHistory = () => {
                 name=""
                 id=""
                 onChange={(e) => setStartDate(e.target.value)}
+                className="p-0 rounded-md"
               />
               <label htmlFor="">To</label>
               <input
@@ -118,6 +130,7 @@ const PayrollHistory = () => {
                 name=""
                 id=""
                 onChange={(e) => setEndDate(e.target.value)}
+                className="p-0 rounded-md"
               />
               <div className="flex justify-end">
                 <button
@@ -128,7 +141,10 @@ const PayrollHistory = () => {
                 </button>
               </div>
             </div>
-            <div className=" mt-3 mb-16 lg:mb-2">
+            <div className=" mt-3 mb-12 lg:mb-2">
+              <h1 className="text-xs font-bold">
+                current salary: {toRupiah(curSalary)}
+              </h1>
               <table className="w-full rounded-md bg-white">
                 <thead>
                   <tr className="text-sm">
@@ -146,8 +162,11 @@ const PayrollHistory = () => {
                       <td>
                         {dayjs(payroll.date.split("T")[0]).format("MM/DD/YYYY")}
                       </td>
-                      <td>{payroll.deduction}</td>
-                      <td>{payroll.payroll}</td>
+                      <td>
+                        <span className="bg-green-payroll text-white py-1 px-1 rounded-full">
+                          {toRupiah(payroll.payroll)}
+                        </span>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

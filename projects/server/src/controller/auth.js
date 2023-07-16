@@ -331,6 +331,7 @@ const employeeInformation = async (req, res) => {
   const userData = req.user;
   try {
     const employeeData = await db.Employee.findOne({
+      include: [db.Salary],
       where: { user_id: userData.userId },
     });
     if (!employeeData) {

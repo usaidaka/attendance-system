@@ -92,7 +92,6 @@ const createPayroll = async (req, res) => {
       await db.Payroll.create({
         user_id: data.user_id,
         date: currentDate,
-        deduction: 0,
         payroll: data.totalSalary,
       });
     }

@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       user_id: DataTypes.INTEGER,
       date: DataTypes.DATE,
-      deduction: DataTypes.INTEGER,
       payroll: DataTypes.INTEGER,
     },
     {

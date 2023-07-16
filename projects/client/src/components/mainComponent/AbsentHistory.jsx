@@ -114,6 +114,7 @@ const AbsentHistory = () => {
                 name=""
                 id=""
                 onChange={(e) => setStartDate(e.target.value)}
+                className="p-0 rounded-md"
                 // value={startDate}
               />
               <label htmlFor="">To</label>
@@ -122,6 +123,7 @@ const AbsentHistory = () => {
                 name=""
                 id=""
                 onChange={(e) => setEndDate(e.target.value)}
+                className="p-0 rounded-md"
                 // value={endDate}
               />
               <div className="flex justify-end">
@@ -133,7 +135,7 @@ const AbsentHistory = () => {
                 </button>
               </div>
             </div>
-            <div className=" mt-3 mb-16 lg:mb-2">
+            <div className=" mt-1 mb-12 lg:mb-2">
               <table className="w-full rounded-md bg-white">
                 <thead>
                   <tr className="text-sm">
@@ -176,7 +178,7 @@ const AbsentHistory = () => {
               </div>
             </div>
             <div>
-              <span className="hidden lg:inline">next page</span>
+              <span className="hidden lg:inline text-sm">next page</span>
               <Link to="/payroll-history">
                 <div className="hidden lg:flex justify-between w-64  bg-green-payroll rounded-xl lg:w-[900px] lg:h-[60px]">
                   <div className="flex justify-between w-full items-center mx-3 my-2">
