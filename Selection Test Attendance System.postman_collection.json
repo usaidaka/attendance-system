@@ -1,0 +1,470 @@
+{
+	"info": {
+		"_postman_id": "6de8ae13-d27b-4a31-890e-1daba3ee1ed9",
+		"name": "Selection Test Attendance System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26453564"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOjEsImVtYWlsRW1wIjoiYWthQGdtYWlsLmNvbSIsImlhdCI6MTY4OTQzNzQyMH0.laplAtpab1yCybF3SocpXmZ1ltGrirPoowa8_n-14P4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"aziz@gmail.com\",\r\n    \"password\": \"1234-Djati\",\r\n    \"confirmPassword\": \"1234-Djati\",\r\n    \"first_name\": \"aziz\",\r\n    \"last_name\": \"abdul\",\r\n    \"birth_date\": \"1999-02-01\",\r\n    \"join_date\": \"2023-07-12\",\r\n    \"salary\": 2500000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"uszaidalkamil@gmail.com\",\r\n    \"password\": \"1234-Djati\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update employee",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"uszaidalkamil@gmail.com\",\r\n    \"password\":\"1234-Djati\",\r\n    \"confirmPassword\":\"1234-Djati\",\r\n    \"first_name\":\"bambang\",\r\n    \"last_name\":\"yudhoyono\",\r\n    \"birth_date\":\"1999-02-01 00:00:00\",\r\n    \"token_confirmation\":\"579729\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/auth/employee-data/:token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"employee-data",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzemFpZGFsa2FtaWxAZ21haWwuY29tIiwiaWQiOjUsImlhdCI6MTY4OTI3MDU0Nn0.mkMaH5LuIjQQYTGf83qmsOR_hqAJO3PD7KV7y6Af79o"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get employee data for update",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/auth/employee-data/:token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"employee-data",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInJvbGUiOjIsImVtYWlsRW1wIjoidXN6YWlkYWxrYW1pbEBnbWFpbC5jb20iLCJpYXQiOjE2ODkzNDE4NTB9.ma5L2SsX3iB6qxBDX79X62J_Pebc0mKeyQACYQyBhUQ"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInJvbGUiOjIsImVtYWlsRW1wIjoidXN6YWlkYWxrYW1pbEBnbWFpbC5jb20iLCJpYXQiOjE2ODk0ODE4NzR9.J8lv-cWt5QEc55YtZIHRxQA-IVUga2ey2ZLn9ioyeFg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/auth/user-information",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"user-information"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employee information",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInJvbGUiOjIsImVtYWlsRW1wIjoidXN6YWlkYWxrYW1pbEBnbWFpbC5jb20iLCJpYXQiOjE2ODk0MTUzNzR9.y-wETNaS_kVaXw7-3WUGBVF9K-aLjTWVGa0wKthQCco",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/auth/employee-data",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"auth",
+								"employee-data"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Attendance",
+			"item": [
+				{
+					"name": "clock in",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksInJvbGUiOjIsImVtYWlsRW1wIjoiYXppekBnbWFpbC5jb20iLCJpYXQiOjE2ODk0Mzc0OTh9.RBxGBPQ4XdG17O2Zzk92ZlrJvBAAZScNNTR49aWWiI8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/attendance/clock-in",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"attendance",
+								"clock-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clock out",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgsInJvbGUiOjIsImVtYWlsRW1wIjoiYnVyaGFuQGdtYWlsLmNvbSIsImlhdCI6MTY4OTQzNzMyMH0.dxKKzJNeSFezb1oUoB1VixxlHVatzfMS6PcmeQRvuYs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/attendance/clock-out",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"attendance",
+								"clock-out"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "track clock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInJvbGUiOjIsImVtYWlsRW1wIjoidXN6YWlkYWxrYW1pbEBnbWFpbC5jb20iLCJpYXQiOjE2ODk0MDEyNjl9.plrwlJxcZoNm-idF-WMkA-78fb9SYAXi-7FH2lrpyTI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/attendance/track",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"attendance",
+								"track"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "absent employee by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInJvbGUiOjIsImVtYWlsRW1wIjoidXN6YWlkYWxrYW1pbEBnbWFpbC5jb20iLCJpYXQiOjE2ODkzOTQwMjh9.YW7LV2NidFhZ7D1wl85WaogaeBpl9yYx_Kl4GaznMEg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/attendance/absent?page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"attendance",
+								"absent"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2023-07-14 00:00:00",
+									"disabled": true
+								},
+								{
+									"key": "endDate",
+									"value": "2023-07-15 00:00:00",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all absent employee by token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInJvbGUiOjIsImVtYWlsRW1wIjoidXN6YWlkYWxrYW1pbEBnbWFpbC5jb20iLCJpYXQiOjE2ODk0MDEyNjl9.plrwlJxcZoNm-idF-WMkA-78fb9SYAXi-7FH2lrpyTI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/attendance/all-absent",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"attendance",
+								"all-absent"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payroll",
+			"item": [
+				{
+					"name": "generate payroll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksInJvbGUiOjIsImVtYWlsRW1wIjoiYXppekBnbWFpbC5jb20iLCJpYXQiOjE2ODk0Mzc0OTh9.RBxGBPQ4XdG17O2Zzk92ZlrJvBAAZScNNTR49aWWiI8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/payroll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"payroll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get payroll user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInJvbGUiOjIsImVtYWlsRW1wIjoidXN6YWlkYWxrYW1pbEBnbWFpbC5jb20iLCJpYXQiOjE2ODk0NDIxNDV9.n1Hdq9LX8bkCXNBObnFygSior96jU5T_dTMWESyS0DQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/payroll",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"payroll"
+							],
+							"query": [
+								{
+									"key": "startData",
+									"value": "2023-06-01",
+									"disabled": true
+								},
+								{
+									"key": "endDate",
+									"value": "2023-07-01",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
