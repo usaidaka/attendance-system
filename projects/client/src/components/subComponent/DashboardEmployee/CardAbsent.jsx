@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 const CardAbsent = () => {
   const attendance = useSelector((state) => state.attendance.value);
-  console.log(attendance);
+
   return (
     <div className="flex justify-between w-64 mt-5 lg:hidden">
       <div className="w-28 h-20 bg-blue-500 flex flex-col justify-center items-start text-sm pl-2 text-white rounded-lg">

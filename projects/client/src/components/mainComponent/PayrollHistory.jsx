@@ -38,7 +38,6 @@ const PayrollHistory = () => {
       })
       .then((res) => setCurSalary(res.data?.data?.Salary?.basic_salary));
   }, [token]);
-  console.log(curSalary);
 
   const buttonFilterPayroll = (e) => {
     e.preventDefault();

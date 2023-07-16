@@ -14,7 +14,7 @@ function withOutAuth(Component) {
         })
         .then((res) => setUserRole(res.data?.data?.role_id));
     }, [token]);
-    console.log(userRole);
+
     if (token) {
       return (
         <>

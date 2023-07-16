@@ -48,10 +48,9 @@ const login = async (req, res) => {
       access_token: accessToken,
     });
   } catch (error) {
-    console.log(error);
-    res.status(404).json({
+    res.status(500).json({
       ok: false,
-      message: "Account not found",
+      message: "server not responding",
     });
   }
 };
@@ -158,8 +157,7 @@ const register = async (req, res) => {
       )
       .catch((error) => res.status(500).send(error.message));
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
+    res.status(500).json({
       ok: false,
       message: error.message,
     });
@@ -254,8 +252,7 @@ const updateEmployee = async (req, res) => {
       message: "update employee data successful",
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
+    res.status(500).json({
       ok: false,
       message: error.message,
     });
@@ -319,7 +316,6 @@ const getEmployeeData = async (req, res) => {
       employeeData: employeeData,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       ok: false,
       message: error.message,

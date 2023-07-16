@@ -62,10 +62,8 @@ const createPayroll = async (req, res) => {
       .slice(0, 2)
       .join("-");
 
-    console.log("curdate string", currentDateString);
-
     const isPayrolled = await db.Payroll.findAll();
-    // console.log(isPayrolled);
+
     const isEmployeePaidOff = isPayrolled
       .map((data) =>
         data.date
@@ -79,7 +77,6 @@ const createPayroll = async (req, res) => {
       )
       .filter((date) => date == currentDateString);
 
-    console.log(isEmployeePaidOff);
     if (isEmployeePaidOff.length !== 0) {
       return res.status(400).json({
         ok: false,
@@ -88,7 +85,6 @@ const createPayroll = async (req, res) => {
     }
 
     for (const data of payroll) {
-      console.log("data salary", data);
       await db.Payroll.create({
         user_id: data.user_id,
         date: currentDate,
@@ -150,8 +146,6 @@ const getPayroll = async (req, res) => {
         message: "Employee's payroll data not found",
       });
     }
-
-    console.log("count", payrollData.count);
 
     res.status(200).json({
       ok: true,

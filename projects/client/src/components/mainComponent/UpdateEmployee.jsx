@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { FormControl, FormErrorMessage } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import axios from "../../api/axios";
-import { ArrowLeftIcon, EyeIcon } from "@heroicons/react/24/outline";
+import { EyeIcon } from "@heroicons/react/24/outline";
 
 const UpdateEmployee = () => {
   const { token } = useParams();
@@ -22,7 +22,7 @@ const UpdateEmployee = () => {
     axios
       .get(`/auth/employee-data/${getToken}`)
       .then((res) => setEmployeeData(res.data?.employeeData))
-      .catch((err) => console.log(err));
+      .catch((err) => setErrMsg(err.response?.data?.message));
   }, [getToken, token]);
 
   const updateUser = async (values, { setStatus, setValues }) => {

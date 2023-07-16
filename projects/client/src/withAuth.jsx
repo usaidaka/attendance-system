@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
 import needAuth from "./assets/withAuth.png";
-import { useEffect, useState } from "react";
-import axios from "./api/axios";
 
 function withAuth(Component) {
   return (props) => {

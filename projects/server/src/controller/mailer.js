@@ -47,7 +47,6 @@ module.exports = {
       };
       transporter.sendMail(mail_configs, function (error, info) {
         if (error) {
-          console.log(error);
           return reject({ message: `An error has occured` });
         }
         return resolve({ message: "Email sent successfully" });

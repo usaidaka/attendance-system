@@ -52,7 +52,7 @@ const CardClock = () => {
         .catch((err) => setErrMsg(err?.response?.data?.message));
     } catch (error) {
       console.log(error);
-      setErrMsg(error);
+      setErrMsg(error.message);
     }
   };
 
@@ -81,7 +81,7 @@ const CardClock = () => {
         .catch((err) => setErrMsg(err?.response?.data?.message));
     } catch (error) {
       console.log(error);
-      setErrMsg(error);
+      setErrMsg(error.message);
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import withAuth from "../../withAuth";
 import payroll from "../../assets/payroll.png";
 import Clock from "../subComponent/globalComponentAsset/Clock";

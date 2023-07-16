@@ -9,7 +9,6 @@ export default function ModalPayroll() {
   const [openModal, setOpenModal] = useState("");
   const [resPayroll, setResPayroll] = useState({});
   const [errMsg, setErrMsg] = useState("");
-  const [isSuccess, setIsSuccess] = useState("");
   const token = localStorage.getItem("token");
 
   const props = { openModal, setOpenModal };

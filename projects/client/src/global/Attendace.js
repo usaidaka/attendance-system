@@ -12,7 +12,6 @@ export const attendanceClockSlice = createSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
 export const { attendanceClock } = attendanceClockSlice.actions;
 
 export default attendanceClockSlice.reducer;

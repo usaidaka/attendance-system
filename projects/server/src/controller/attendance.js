@@ -3,7 +3,7 @@ const db = require("../../models");
 
 const clockIn = async (req, res) => {
   const userData = req.user;
-  // console.log(userData);
+
   try {
     if (!userData) {
       return res.status(403).json({
@@ -62,8 +62,7 @@ const clockIn = async (req, res) => {
       data: clock,
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
+    res.status(500).json({
       ok: false,
       message: error.message,
     });
@@ -95,8 +94,6 @@ const clockOut = async (req, res) => {
       limit: 1,
       order: [["id", "desc"]],
     });
-
-    console.log("last clock in", lastClockIn);
 
     if (!lastClockIn.clock_in) {
       return res.status(400).json({
@@ -152,8 +149,7 @@ const clockOut = async (req, res) => {
       data: clock,
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
+    res.status(500).json({
       ok: false,
       message: error.message,
     });
@@ -231,22 +227,9 @@ const employeeAbsentById = async (req, res) => {
   }
 };
 
-const getAllAbsent = async (req, res) => {
-  const userData = req.user;
-  try {
-    const all = await db.Attendance.findAll();
-    res.json({
-      all,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 module.exports = {
   clockOut,
   clockIn,
   getLatestClock,
   employeeAbsentById,
-  getAllAbsent,
 };

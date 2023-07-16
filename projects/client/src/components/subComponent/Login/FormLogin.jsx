@@ -3,13 +3,10 @@ import { FormControl, FormErrorMessage } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { EyeIcon } from "@heroicons/react/24/outline";
 
 import axios from "../../../api/axios";
-
-import { EyeIcon } from "@heroicons/react/24/outline";
 
 const FormLogin = () => {
   const navigate = useNavigate();

@@ -25,10 +25,4 @@ AttendanceRouter.get(
   AttendanceController.employeeAbsentById
 );
 
-AttendanceRouter.get(
-  "/attendance/all-absent",
-  verifyTokenEmployee,
-  AttendanceController.getAllAbsent
-);
-
 module.exports = AttendanceRouter;

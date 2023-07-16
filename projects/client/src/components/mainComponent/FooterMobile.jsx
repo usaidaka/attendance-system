@@ -18,7 +18,6 @@ const FooterMobile = () => {
       })
       .then((res) => setUserRole(res.data?.data?.role_id));
   }, [token]);
-  console.log(userRole);
 
   return (
     <div
