@@ -181,7 +181,7 @@ const employeeAbsentById = async (req, res) => {
 
   const startDate = req.query.startDate
     ? dayjs(req.query.startDate).startOf("day").format("YYYY-MM-DD HH:mm:ss")
-    : dayjs().subtract(5, "day").startOf("day").format("YYYY-MM-DD HH:mm:ss");
+    : dayjs().subtract(30, "day").startOf("day").format("YYYY-MM-DD HH:mm:ss");
   const endDate = req.query.endDate
     ? dayjs(req.query.endDate).endOf("day").format("YYYY-MM-DD HH:mm:ss")
     : dayjs().add(1, "day").endOf("day").format("YYYY-MM-DD HH:mm:ss");
