@@ -6,6 +6,7 @@ import { Pagination } from "flowbite-react";
 
 import CardClock from "../subComponent/DashboardEmployee/CardClock";
 import axios from "../../api/axios";
+import withAuth from "../../withAuth";
 
 const headings = ["No", "Date", "deduction", "payroll"];
 const PayrollHistory = () => {
@@ -181,4 +182,4 @@ const PayrollHistory = () => {
   );
 };
 
-export default PayrollHistory;
+export default withAuth(PayrollHistory);

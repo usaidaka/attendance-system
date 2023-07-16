@@ -22,6 +22,9 @@ const DashBoardAdmin = () => {
         <button className="bg-blue-button py-1 rounded-md">
           <Link to="/register-employee">Enroll New Employee </Link>
         </button>
+        <button className="bg-green-payroll py-1 rounded-md">
+          <Link to="/pay-employee">pay employee salaries </Link>
+        </button>
         <button className="bg-red-500 py-1 rounded-md" onClick={handleLogOut}>
           Log out
         </button>

@@ -23,7 +23,7 @@ const verifyTokenEmployee = (req, res, next) => {
     });
     const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     req.user = payload;
-    console.log("midd", req.user);
+
     if (req.user.role === 2) {
       next();
     } else {

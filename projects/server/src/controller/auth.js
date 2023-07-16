@@ -351,10 +351,44 @@ const employeeInformation = async (req, res) => {
   }
 };
 
+const getUserData = async (req, res) => {
+  const userData = req.user;
+  try {
+    const user = await db.User.findOne({
+      where: { id: userData.userId },
+      attributes: {
+        exclude: [
+          "user_id",
+          "token_confirmation",
+          "token_confirmation_createdAt",
+          "createdAt",
+          "updatedAt",
+        ],
+      },
+    });
+    if (!user) {
+      return res.status(400).json({
+        ok: false,
+        message: "user not found",
+      });
+    }
+    res.status(200).json({
+      ok: true,
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   login,
   register,
   updateEmployee,
   getEmployeeData,
   employeeInformation,
+  getUserData,
 };

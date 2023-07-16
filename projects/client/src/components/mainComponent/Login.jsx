@@ -1,3 +1,4 @@
+import withOutAuth from "../../withOutAuth";
 import Clock from "../subComponent/globalComponentAsset/Clock";
 import FormLogin from "../subComponent/Login/FormLogin";
 
@@ -17,4 +18,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withOutAuth(Login);

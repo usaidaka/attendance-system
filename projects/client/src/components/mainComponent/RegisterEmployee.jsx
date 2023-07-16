@@ -7,6 +7,7 @@ import { useState } from "react";
 import axios from "../../api/axios";
 import { ArrowLeftIcon, EyeIcon } from "@heroicons/react/24/outline";
 import { NumericFormat } from "react-number-format";
+import withAuth from "../../withAuth";
 
 const RegisterEmployee = () => {
   const [errMsg, setErrMsg] = useState("");
@@ -336,4 +337,4 @@ const RegisterEmployee = () => {
   );
 };
 
-export default RegisterEmployee;
+export default withAuth(RegisterEmployee);

@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const verifyTokenAdmin = (req, res, next) => {
+const verifyToken = (req, res, next) => {
   try {
     const authHeaders = req.headers["authorization"];
     const token = authHeaders && authHeaders.split(" ")[1];
@@ -23,15 +23,7 @@ const verifyTokenAdmin = (req, res, next) => {
     });
     const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     req.user = payload;
-
-    if (req.user.role === 1) {
-      next();
-    } else {
-      return res.status(403).json({
-        ok: false,
-        message: "only admin can access",
-      });
-    }
+    next();
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -40,4 +32,4 @@ const verifyTokenAdmin = (req, res, next) => {
   }
 };
 
-module.exports = verifyTokenAdmin;
+module.exports = verifyToken;

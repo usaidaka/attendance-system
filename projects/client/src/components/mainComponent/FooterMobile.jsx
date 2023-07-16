@@ -3,16 +3,29 @@ import {
   CurrencyDollarIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-
-/* LOCATION NYA BELUM DI SET KARENA BELUM BIKIN PAGE UNTUK ABSENT HISTORY DAN PAYROLL */
+import axios from "../../api/axios";
 
 const FooterMobile = () => {
   const location = useLocation();
+  const [userRole, setUserRole] = useState({});
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    axios
+      .get("/auth/user-information", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => setUserRole(res.data?.data?.role_id));
+  }, [token]);
+  console.log(userRole);
 
   return (
-    <div className="fixed bottom-0 lg:hidden ">
+    <div
+      className={`${
+        token && userRole === 2 ? "fixed" : "hidden"
+      } bottom-0 lg:hidden `}
+    >
       <div className="bg-pink-footer w-screen h-12 flex justify-around items-center lg:hidden">
         <div
           className={`bg-inherit ${

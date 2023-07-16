@@ -7,6 +7,7 @@ import UpdateEmployee from "./components/mainComponent/UpdateEmployee";
 import FooterMobile from "./components/mainComponent/FooterMobile";
 import AbsentHistory from "./components/mainComponent/AbsentHistory";
 import PayrollHistory from "./components/mainComponent/PayrollHistory";
+import PayEmployeeByAdmin from "./components/mainComponent/PayEmployeeByAdmin";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/update-employee/:token" element={<UpdateEmployee />} />
           <Route path="/absent-history" element={<AbsentHistory />} />
           <Route path="/payroll-history" element={<PayrollHistory />} />
+          <Route path="/pay-employee" element={<PayEmployeeByAdmin />} />
         </Routes>
       </div>
       <FooterMobile />

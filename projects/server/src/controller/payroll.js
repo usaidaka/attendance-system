@@ -97,9 +97,9 @@ const createPayroll = async (req, res) => {
       });
     }
 
-    res.json({
+    res.status(200).json({
       ok: true,
-      payroll,
+      message: "payment of employee's salary are successful",
     });
   } catch (error) {
     console.error(error);

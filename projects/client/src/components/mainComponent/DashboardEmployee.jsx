@@ -2,7 +2,7 @@ import React from "react";
 import CardClock from "../subComponent/DashboardEmployee/CardClock";
 import CardAbsent from "../subComponent/DashboardEmployee/CardAbsent";
 import CardHistory from "../subComponent/DashboardEmployee/CardHistory";
-import { useNavigate } from "react-router-dom";
+import withAuth from "../../withAuth";
 
 const DashboardEmployee = () => {
   return (
@@ -16,4 +16,4 @@ const DashboardEmployee = () => {
   );
 };
 
-export default DashboardEmployee;
+export default withAuth(DashboardEmployee);

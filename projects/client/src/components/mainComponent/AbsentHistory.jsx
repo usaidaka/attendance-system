@@ -5,6 +5,7 @@ import { ClockIcon, CurrencyDollarIcon } from "@heroicons/react/24/outline";
 import dayjs from "dayjs";
 import { Pagination } from "flowbite-react";
 import axios from "../../api/axios";
+import withAuth from "../../withAuth";
 
 const headings = ["No", "Date", "Clock in", "Clock Out"];
 
@@ -194,4 +195,4 @@ const AbsentHistory = () => {
   );
 };
 
-export default AbsentHistory;
+export default withAuth(AbsentHistory);
