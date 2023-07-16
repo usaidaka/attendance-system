@@ -8,13 +8,7 @@ module.exports = {
         basic_salary: 5000000,
       },
       {
-        basic_salary: 2500000,
-      },
-      {
         basic_salary: 10000000,
-      },
-      {
-        basic_salary: 7500000,
       },
     ]);
   },
