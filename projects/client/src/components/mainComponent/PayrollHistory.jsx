@@ -15,7 +15,9 @@ const PayrollHistory = () => {
   const [payrolls, setPayrolls] = useState([]);
   const [startDate, setStartDate] = useState(() => {
     const currentDate = dayjs();
-    const formattedStart = currentDate.subtract(5, "day").format("YYYY-MM-DD");
+    const formattedStart = currentDate
+      .subtract(5, "month")
+      .format("YYYY-MM-DD");
     return formattedStart;
   });
   const [endDate, setEndDate] = useState(() => {
