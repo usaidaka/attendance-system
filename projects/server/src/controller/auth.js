@@ -166,7 +166,7 @@ const register = async (req, res) => {
 
 const updateEmployee = async (req, res) => {
   const { token } = req.params;
-  const t = db.sequelize.transaction();
+
   try {
     if (token == null) {
       return res.status(401).json({
@@ -223,8 +223,7 @@ const updateEmployee = async (req, res) => {
         token_confirmation: null,
         token_confirmation_createdAt: null,
       },
-      { where: { token_confirmation: token_confirmation } },
-      { transaction: t }
+      { where: { token_confirmation: token_confirmation } }
     );
 
     // create employee
@@ -246,17 +245,14 @@ const updateEmployee = async (req, res) => {
         last_name: last_name,
         birth_date: birth_date,
       },
-      { where: { user_id: req.user.id } },
-      { transaction: t }
+      { where: { user_id: req.user.id } }
     );
 
-    await t.commit();
     res.status(201).json({
       ok: true,
       message: "update employee data successful",
     });
   } catch (error) {
-    await t.rollback();
     res.status(500).json({
       ok: false,
       message: error.message,
