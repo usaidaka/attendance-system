@@ -321,7 +321,6 @@ module.exports = {
   login,
   register,
   updateEmployee,
-  getEmployeeData,
   employeeInformation,
   getUserData,
 };
