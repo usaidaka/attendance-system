@@ -3,6 +3,7 @@ const db = require("../../models");
 
 const clockIn = async (req, res) => {
   const userData = req.user;
+  const t = await db.sequelize.transaction();
 
   try {
     if (!userData) {
@@ -51,17 +52,22 @@ const clockIn = async (req, res) => {
       }
     }
 
-    const clock = await db.Attendance.create({
-      user_id: userData.userId,
-      clock_in: currentTime,
-      date: currentDate,
-    });
+    const clock = await db.Attendance.create(
+      {
+        user_id: userData.userId,
+        clock_in: currentTime,
+        date: currentDate,
+      },
+      { transaction: t }
+    );
+    await t.commit();
     res.status(201).json({
       ok: true,
       message: "you are logged in",
       data: clock,
     });
   } catch (error) {
+    await t.rollback();
     res.status(500).json({
       ok: false,
       message: error.message,
@@ -71,7 +77,7 @@ const clockIn = async (req, res) => {
 
 const clockOut = async (req, res) => {
   const userData = req.user;
-
+  const t = await db.sequelize.transaction();
   try {
     if (!userData) {
       return res.status(403).json({
@@ -140,9 +146,10 @@ const clockOut = async (req, res) => {
           clock_out: null,
           id: lastClockIn.id,
         },
-      }
+      },
+      { transaction: t }
     );
-
+    await t.commit();
     res.status(201).json({
       ok: true,
       message: "clocked out successful",
